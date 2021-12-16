@@ -1,25 +1,9 @@
-import { FaGoogle, FaKey, FaMailBulk, FaRegEnvelope } from 'react-icons/fa'
 import Head from 'next/head'
-import React, { useEffect } from 'react'
-import { getProviders, getSession } from 'next-auth/react'
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/router'
-
+import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { FaGoogle, FaKey, FaMailBulk, FaMailchimp, FaRegEnvelope } from 'react-icons/fa'
 
-const Login = ({ provider, session }) => {
-  const router = useRouter();
-
-  console.log(session)
-  useEffect(() => {
-    if (session) {
-      router.push('/policy')
-    }
-  }, [router, session])
-
-  // if (session) {
-  //   router.push(process.env.NEXTAUTH_URL)
-  // }
+export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
@@ -37,7 +21,7 @@ const Login = ({ provider, session }) => {
             </div>
             <div className="border-2 w-14 border-red-700 inline-block mb-2 rounded-full"></div>
             <div className="flex justify-center my-1">
-              <a href="#" onClick={() => signIn(provider.google.id)} className='border-2 border-gray-200 hover:border-red-800 hover:text-red-800 rounded-full p-3 mx-1'>
+              <a href="#" className='border-2 border-gray-200 hover:border-red-800 hover:text-red-800 rounded-full p-3 mx-1'>
                 <FaGoogle className='text-sm' />
               </a>
 
@@ -66,13 +50,5 @@ const Login = ({ provider, session }) => {
       </main>
 
     </div>
-
   )
 }
-Login.getInitialProps = async (context) => {
-  return {
-    provider: await getProviders(context),
-    session: await getSession(context)
-  }
-}
-export default Login
