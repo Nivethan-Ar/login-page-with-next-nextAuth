@@ -1,6 +1,6 @@
 import { FaGoogle, FaKey, FaMailBulk, FaRegEnvelope } from 'react-icons/fa'
 import Head from 'next/head'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getProviders, getSession } from 'next-auth/react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -9,13 +9,14 @@ import styles from '../styles/Home.module.css'
 
 const Login = ({ provider, session }) => {
   const router = useRouter();
+  const [emailId, setEmailId] = useState('');
 
-  console.log(session)
+  // console.log(session)
   useEffect(() => {
-    if (session) {
-      router.push('/policy')
-    }
-  }, [router, session])
+    // if (session) {
+    //   router.push('/policy')
+    // }
+  }, [router])
 
   // if (session) {
   //   router.push(process.env.NEXTAUTH_URL)
@@ -47,26 +48,23 @@ const Login = ({ provider, session }) => {
             </div>
             <p className='text-gray-500 my-5 text-sm'>or login using your email account</p>
             <div className='flex flex-col items-center gap-3'>
-{/*  */}
+
+              {/* Email login form   */}
               <form action="/api/auth/signin/email" method="post">
 
                 <div className='bg-gray-100 w-64 p-2 flex items-center gap-2'>
                   <FaRegEnvelope className='text-gray-400 m-1' />
-                  <input type="email" name='email' placeholder='Email' className='bg-gray-100 outline-none text-sm flex-1' />
+                  <input value={emailId} onInput={e => setEmailId(e.target.value)} type="email" name='email' placeholder='Email' className='bg-gray-100 outline-none text-sm flex-1' />
 
                 </div>
-                {/* <div className='bg-gray-100 w-64 p-2 flex items-center gap-2'>
-                  <FaKey className='text-gray-400 m-1' />
-                  <input type="password" name='password' placeholder='Password' className='bg-gray-100 outline-none text-sm flex-1' />
-
-                </div> */}
+             
                 <div>
-                  <button href="#" type='submit' className='border-2 border-red-700 text-black rounded-full px-12 py-2 mt-2 inline-block font-semibold hover:bg-red-600 hover:text-white'>Sign In</button>
-            </div>
-          </form>
+                  <button href="#" onClick={() => signIn("email", { email: emailId, callbackUrl: 'http://localhost:3000/' })} className='border-2 border-red-700 text-black rounded-full px-12 py-2 mt-2 inline-block font-semibold hover:bg-red-600 hover:text-white'>Sign In</button>
+                </div>
+              </form>
 
-        </div>
-    </div>
+            </div>
+          </div>
         </div >
       </main >
 

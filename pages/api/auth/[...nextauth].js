@@ -2,13 +2,12 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google"
 import EmailProvider from "next-auth/providers/email";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "mongodb/lib"
+import clientPromise from "../../../lib/mongodb";
+import { customVerficationRequest } from "../../../utils/customVerficationRequest";
 
 export default NextAuth({
-  // session: {
-  //   strategy: "jwt",
-  // },
   adapter: MongoDBAdapter(clientPromise),
+
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -23,10 +22,10 @@ export default NextAuth({
           pass: process.env.EMAIL_SERVER_PASSWORD,
         }
       },
-      from: process.env.EMAIL_FROM
+      from: process.env.EMAIL_FROM,
+      sendVerificationRequest: customVerficationRequest,
     }),
   ],
-
 
   secret: process.env.SECRET,
   jwt: {
@@ -37,9 +36,9 @@ export default NextAuth({
     signIn: '/login'
   },
   callbacks: {
-    // session: async (session, user) => {
-    //   session.userId = user.sub
-    //   return Promise.resolve(session)
-    // }
+    session: async (session, user) => {
+      session.userId = user.sub
+      return Promise.resolve(session)
+    }
   }
 });

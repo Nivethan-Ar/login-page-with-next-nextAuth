@@ -8,6 +8,7 @@ export default function Page() {
   const loading = status === 'loading'
   useEffect(() => {
   }, [session])
+
   if (!session) { return  <Layout><h1 className='flex justify-center align-middle'>ACCESS DENIED</h1></Layout> }
   return (
     <Layout>
